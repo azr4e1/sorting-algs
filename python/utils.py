@@ -31,7 +31,7 @@ class Test:
             validation = self.read_newline_list(validation_file.read_text())
             self._run_single_test(input, validation)
 
-    def _run_single_test(self, input, validation) -> None:
+    def _run_single_test(self, input: list[int], validation: list[int]) -> None:
         start_time = time.perf_counter()
         sorted_input = self.func(input)
         end_time = time.perf_counter()
