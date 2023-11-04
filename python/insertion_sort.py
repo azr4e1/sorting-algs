@@ -15,4 +15,6 @@ def insertion_sort(my_list: list[int]) -> list[int]:
 
 
 if __name__ == "__main__":
-    u.test(insertion_sort)
+    test_dir = u.TEST_DIR
+    test = u.Test(insertion_sort, test_dir)
+    test.run()
