@@ -5,6 +5,8 @@ module Utils
   (test)
 where
 
+import qualified Data.Time as DT
+
 -- read content of a single column dataset
 -- and turn it into a list of numbers
 readNewlineList :: (Ord n, Num n, Read n) => String -> [n]
@@ -18,5 +20,19 @@ test sorting = do
   validationContent <- readFile "../validation"
   let test = readNewlineList testContent
       validation = readNewlineList validationContent
-      output = sorting test
-  if output == validation then print "Success!" else print "Failed!"
+  -- start timer
+  startTime <- DT.getCurrentTime
+
+  -- execute
+  let output = sorting test
+
+  -- stop timer
+  endTime <- DT.getCurrentTime
+
+  -- get time lapse
+  let timeLapse = DT.diffUTCTime endTime startTime
+
+  -- result
+  if output == validation
+    then print $ "Success! It took " <> show timeLapse
+    else print "Failed!"
