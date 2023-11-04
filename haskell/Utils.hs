@@ -7,12 +7,12 @@ where
 
 -- read content of a single column dataset
 -- and turn it into a list of numbers
-readNewlineList :: (Num n, Read n) => String -> [n]
+readNewlineList :: (Ord n, Num n, Read n) => String -> [n]
 readNewlineList "" = []
 readNewlineList content = map read $ lines content
 
 -- test the sorting function
-test :: (Eq n, Num n, Read n) => ([n] -> [n]) -> IO()
+test :: (Ord n, Num n, Read n) => ([n] -> [n]) -> IO()
 test sorting = do
   testContent <- readFile "../input"
   validationContent <- readFile "../validation"
