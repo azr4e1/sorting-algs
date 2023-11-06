@@ -5,7 +5,7 @@ module Utils
   (test)
 where
 
-import qualified Data.Time as DT
+import System.CPUTime (getCPUTime)
 import qualified Data.List as DL
 import System.Directory (getDirectoryContents)
 import Control.Monad (zipWithM)
@@ -47,24 +47,23 @@ singleTest sorting inputFile validationFile = do
   let test = readNewlineList testContent
       validation = readNewlineList validationContent
   -- start timer
-  startTime <- DT.getCurrentTime
+  startTime <- getCPUTime
 
   -- execute
   let output = sorting test
 
-  -- stop timer
-  endTime <- DT.getCurrentTime
-
-  -- get time lapse
-  let timeLapse = DT.diffUTCTime endTime startTime
-
   -- result
   if output == validation
-    then pure $ "Success! It took " <>
-                show timeLapse <>
-                " to sort " <>
-                show (length test) <>
-                " elements."
+    then
+      do
+        endTime <- getCPUTime
+        -- get time lapse
+        let timeLapse = (fromIntegral endTime - fromIntegral startTime) / (10^12)
+        pure $ "Success! It took " <>
+               show timeLapse <>
+               " to sort " <>
+               show (length test) <>
+               " elements."
     else pure "Failed!"
 
 test :: (Ord n, Num n, Read n) => ([n] -> [n]) -> IO ()
